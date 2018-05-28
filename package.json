@@ -18,6 +18,8 @@
   "author": "Joe SHI <qiaoshi@amazon.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-iot-device-sdk": "^2.2.1"
+    "aws-iot-device-sdk": "^2.2.1",
+    "onoff": "^3.1.0",
+    "serialport": "^6.2.0"
   }
 }
