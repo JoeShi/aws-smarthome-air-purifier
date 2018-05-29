@@ -4,8 +4,8 @@ const AWSIoT = require('aws-iot-device-sdk');
 const Gpio = require('onoff').Gpio;
 const ThingName = 'air-purifier-1';
 
-// const fan = new Gpio(22, 'low');
-// const buzzer = new Gpio(26, 'low');
+const fan = new Gpio(22, 'low');
+const buzzer = new Gpio(26, 'low');
 const currentFanStatus = 'off' // on|off
 const serial = require('./serial');
 
@@ -70,14 +70,14 @@ thingShadow.register(ThingName, () => {
     console.log('update shadow failed, operation still in progress')
   }
   
-  console.log('register thing shadow successlly!')
+  console.log('register thing shadow successfully!')
 })
 
 thingShadow.on('delta', (thingName, stateObject) => {
   if (stateObject.state && stateObject.state.desired && stateObject.state.desired.fan) {
     const status = stateObject.state.desired.fan
     if (status !== currentFanStatus) {
-      toggleFan(status)
+      // toggleFan(status)
       const fanState = {
         state: {
           reported: {
@@ -85,6 +85,7 @@ thingShadow.on('delta', (thingName, stateObject) => {
           }
         }
       }
+      console.log(JSON.stringify(fanState))
       thingShadow.update(thingName, fanState)
     }
   }
