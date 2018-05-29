@@ -12,39 +12,23 @@ async function toggleBuzzer(status = 'off', delay = 50){
   } else if (status === 'on') {
     buzzer.writeSync(0)
   }
-  return new Promise(resolve => P{
+
+  return new Promise((resolve => {
     setTimeout(() => {
       resolve()
     }, delay)
-  })
+  }))
 }
 
-/**
- * Create a buzz sound based on status.
- * @param status
- */
-const buzz = (status = 'off') => {
-  if (status === 'on') {
-    buzzer.writeSync(1);
-    setTimeout(() => {
-      buzzer.writeSync(0)
-      setTimeout(() => {
-        buzzer.writeSync(1)
-        setTimeout(() => {
-          buzzer.writeSync(0)
-        }, 100)
-      }, 100)
-    }, 100)
-  } else if (status === 'on') {
-    buzzer.writeSync(1);
-    setTimeout(() => {
-      buzzer.writeSync(0)
-    }, 300)
-  }
-}
-
-
-
+toggleBuzzer('on', 50).then(() => {
+  return toggleBuzzer('off', 50)
+}).then(() => {
+  return toggleBuzzer('on', 50)
+}).then(() => {
+  return toggleBuzzer('off', 50)
+}).then(() => {
+  console.log('finished')
+})
 
 module.exports.start = function() {
   fan.writeSync(0)
