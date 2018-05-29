@@ -18,6 +18,9 @@ thingShadow.register(ThingName, () => {
     state: {
       reported: {
         fan: "off"
+      },
+      desired: {
+        fan: "off"
       }
     }
   }
@@ -56,6 +59,7 @@ thingShadow.on('delta', (thingName, stateObject) => {
   }
 })
 
+
 setInterval(() => {
   const density = {
     value: serial.dustDensity(),
@@ -65,3 +69,5 @@ setInterval(() => {
     if (err) { console.error(err) }
   })
 }, 3 * 1000)
+
+
