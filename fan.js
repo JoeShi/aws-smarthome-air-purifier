@@ -1,7 +1,7 @@
 'use strict'
 
 const Gpio = require('onoff').Gpio;
-const fan = new Gpio(17, 'low'); // BCM number
+const fan = new Gpio(17, 'high'); // BCM number
 const buzzer = new Gpio(12, 'high'); // BCM number, hight is off
 let currentStatus = 'off'  // current status of fan
 
