@@ -38,6 +38,7 @@ const buzz = (status = 'off') => {
  * @param state the desired state
  */
 const toggleFan = (state = 'off') => {
+  return
   if (state === 'on') {
     fan.writeSync(1)
   } else if (state === 'off') {
@@ -81,16 +82,14 @@ thingShadow.on('delta', (thingName, stateObject) => {
     const newState = {
       state: {
         reported: {
-	  fan: status
-	}
+	        fan: status
+	      }
       }
     }
-	  
-     console.log(JSON.stringify(newState))
-     thingShadow.update(thingName, newState)
-    } else {
-      console.log('state is same')
-    }
+    console.log(JSON.stringify(newState))
+    thingShadow.update(thingName, newState)
+  } else {
+    console.log('state is same')
   }
 })
 
