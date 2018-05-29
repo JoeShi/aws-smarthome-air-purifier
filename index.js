@@ -58,7 +58,7 @@ const thingShadow = AWSIoT.thingShadow({
 thingShadow.register(ThingName, () => {
   const fanState = {
     state: {
-      desired: {
+      reported: {
         fan: "off"
       }
     }
@@ -74,19 +74,22 @@ thingShadow.register(ThingName, () => {
 })
 
 thingShadow.on('delta', (thingName, stateObject) => {
-  if (stateObject.state && stateObject.state.desired && stateObject.state.desired.fan) {
-    const status = stateObject.state.desired.fan
-    if (status !== currentFanStatus) {
-      // toggleFan(status)
-      const fanState = {
-        state: {
-          reported: {
-            fan: status
-          }
-        }
+  console.log(stateObject)
+  if (stateObject.state && stateObject.state.fan) {
+    const status = stateObject.state.fan
+    toggleFan(status)
+    const newState = {
+      state: {
+        reported: {
+	  fan: status
+	}
       }
-      console.log(JSON.stringify(fanState))
-      thingShadow.update(thingName, fanState)
+    }
+	  
+     console.log(JSON.stringify(newState))
+     thingShadow.update(thingName, newState)
+    } else {
+      console.log('state is same')
     }
   }
 })
