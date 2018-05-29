@@ -4,8 +4,8 @@ const AWSIoT = require('aws-iot-device-sdk');
 const Gpio = require('onoff').Gpio;
 const ThingName = 'air-purifier-1';
 
-const fan = new Gpio(22, 'low');
-const buzzer = new Gpio(26, 'low');
+// const fan = new Gpio(22, 'low');
+// const buzzer = new Gpio(26, 'low');
 const currentFanStatus = 'off' // on|off
 const serial = require('./serial');
 
@@ -48,7 +48,7 @@ const toggleFan = (state = 'off') => {
 
 const thingShadow = AWSIoT.thingShadow({
   keyPath: './certs/private.pem.key',
-  certpath: './certs/certificate.pem.crt',
+  certPath: './certs/certificate.pem.crt',
   caPath: './certs/ca.pem',
   clientId: ThingName,
   host: 'abty4kifln98q.iot.ap-northeast-1.amazonaws.com'
@@ -69,7 +69,8 @@ thingShadow.register(ThingName, () => {
   if (clientTokenUpdate === null) {
     console.log('update shadow failed, operation still in progress')
   }
-
+  
+  console.log('register thing shadow successlly!')
 })
 
 thingShadow.on('delta', (thingName, stateObject) => {
@@ -92,7 +93,10 @@ thingShadow.on('delta', (thingName, stateObject) => {
 
 setInterval(() => {
   const density = {
-    dustDensity: serial.dustDensity
+    value: serial.dustDensity(),
+    time: new Date()
   }
-  thingShadow.publish('/airPurifiers/' + ThingName + '/dustDensity', density)
-}, 5 * 1000)
+  thingShadow.publish('/airPurifiers/' + ThingName + '/dustDensity', JSON.stringify(density), function(err) {
+    if (err) { console.error(err) }
+  })
+}, 3 * 1000)
