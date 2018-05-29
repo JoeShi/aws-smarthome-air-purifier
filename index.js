@@ -7,6 +7,10 @@ const fan = require('./fan');
 
 fan.start();
 
+setTimeout(() => {
+  fan.stop();
+}, 3000)
+
 
 //
 // const thingShadow = AWSIoT.thingShadow({
